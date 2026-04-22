@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>matchbox</title>
+    <style>
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+        }
+
+        .sel_item {
+            font-size: 32px;
+            border-radius: 7px;
+            width: 320px;
+            text-align: center;
+            border: none;
+            margin-bottom: 10px;
+            border: solid transparent 2px;
+            display: block;
+        }
+
+        #sel_prefix_dropdown:hover {
+            border: solid black 2px;
+        }
+
+        #sel_prefix_continue {
+            background-color: #ddd;
+        }
+        #sel_prefix_continue.btn_enabled {
+            border: solid #aedab0 2px;
+        }
+        #sel_prefix_continue:hover {
+            border: solid black 2px;
+        }
+        #sel_prefix_continue:disabled {
+            border: solid transparent 2px;
+        }
+
+        #sel_prefix_dropdown, #sel_prefix_dropdown_default {
+            background-color: #cefad0;
+            border: solid #aedab0 2px;
+        }
+
+        #sel_items_back {
+            background-color: #cefad0;
+            border: solid #aedab0 2px;
+        }
+        #sel_items_back:hover {
+            border: solid black 2px;
+        }
+
+        .flex_center {
+            display: -webkit-box;
+            display: -ms-flexbox;
+            display: -webkit-flex;
+            display: flex;
+            
+            justify-content: center;
+            align-items: center;
+            flex-wrap: wrap;
+            
+            width: 100%;
+        }
+        .flex_break {
+            flex-basis: 100%;
+            height: 0;
+        }
+
+        .sel_items_group {
+            font-size: 32px;
+            border-radius: 7px;
+            width: 320px;
+            text-align: center;
+            border: none;
+            margin-bottom: 10px;
+            border: solid transparent 2px;
+            display: block;
+        }
+
+        .sel_items_item {
+            margin-top: 5px;
+            margin-bottom: 5px;
+        }
+
+        .btn_image {
+            height: 20px;
+        }
+        .btn_side_copy {
+            float: right;
+            margin-top: 5px;
+            margin-right: 5px;
+        }
+
+        .sel_items_results_box {
+            background-color: #ddd;
+            border: solid #c0c0c0 2px;
+            overflow-x: auto;
+            font-size: 16px;
+        }
+
+        .col_lime {
+            filter: invert(51%) sepia(84%) saturate(3572%) hue-rotate(91deg) brightness(114%) contrast(117%);
+        }
+        .col_red svg {
+            filter: invert(8%) sepia(88%) saturate(7258%) hue-rotate(1deg) brightness(106%) contrast(122%);
+        }
+        .col_gray {
+            filter: invert(54%) sepia(19%) saturate(0%) hue-rotate(293deg) brightness(96%) contrast(93%);
+        }
+
+        #img_heart {
+            display: none;
+        }
+
+        .btn_image_heart {
+            float: left;
+            margin-left: 15px;
+            margin-top: 8px;
+        }
+    </style>
+</head>
+<body>
+    <div class="flex_center">
+        <p style="display: inline; font-size: 64px; font-weight: bold; margin-left: 10px;">matchbox</p>
+    </div>
+    <div id="sel_prefix" class="flex_center">
+        <select id="sel_prefix_dropdown" class="sel_item">
+            <option value="" selected id="sel_prefix_dropdown_default" class="sel_prefix_dropdown_item">&nbsp;</option>
+        </select>
+        <div class="flex_break"></div>
+        <button id="sel_prefix_continue" class="sel_item" disabled onclick="javascript:mbxNext()"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" class="btn_image"><!--!Font Awesome Free v7.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2026 Fonticons, Inc.--><path d="M502.6 278.6c12.5-12.5 12.5-32.8 0-45.3l-160-160c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3L402.7 224 32 224c-17.7 0-32 14.3-32 32s14.3 32 32 32l370.7 0-105.4 105.4c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0l160-160z"/></svg></button>
+    </div>
+    <div id="sel_items" class="flex_center" style="display: none;">
+        <button class="sel_item" id="sel_items_back" onclick="javascript:mbxBack()"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" class="btn_image"><!--!Font Awesome Free v7.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2026 Fonticons, Inc.--><path d="M9.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 288 480 288c17.7 0 32-14.3 32-32s-14.3-32-32-32l-370.7 0 105.4-105.4c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/></svg></button>
+        <div class="flex_break"></div>
+        <div class="sel_item sel_items_results_box">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512" class="btn_image btn_side_copy"><!--!Font Awesome Free v7.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2026 Fonticons, Inc.--><path d="M232 96l-80 0c-13.3 0-24-10.7-24-24s10.7-24 24-24l80 0c13.3 0 24 10.7 24 24s-10.7 24-24 24zm0 48c37.1 0 67.6-28 71.6-64L320 80c8.8 0 16 7.2 16 16l0 352c0 8.8-7.2 16-16 16L64 464c-8.8 0-16-7.2-16-16L48 96c0-8.8 7.2-16 16-16l16.4 0c4 36 34.5 64 71.6 64l80 0zM291.9 32C279 12.7 257 0 232 0L152 0c-25 0-47 12.7-59.9 32L64 32C28.7 32 0 60.7 0 96L0 448c0 35.3 28.7 64 64 64l256 0c35.3 0 64-28.7 64-64l0-352c0-35.3-28.7-64-64-64l-28.1 0z"/></svg>
+            <p class="sel_items_results"></p>
+        </div>
+        <div class="flex_break"></div>
+        <div class="sel_item sel_items_results_box" id="sel_items_before">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512" class="btn_image btn_side_copy"><!--!Font Awesome Free v7.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2026 Fonticons, Inc.--><path d="M232 96l-80 0c-13.3 0-24-10.7-24-24s10.7-24 24-24l80 0c13.3 0 24 10.7 24 24s-10.7 24-24 24zm0 48c37.1 0 67.6-28 71.6-64L320 80c8.8 0 16 7.2 16 16l0 352c0 8.8-7.2 16-16 16L64 464c-8.8 0-16-7.2-16-16L48 96c0-8.8 7.2-16 16-16l16.4 0c4 36 34.5 64 71.6 64l80 0zM291.9 32C279 12.7 257 0 232 0L152 0c-25 0-47 12.7-59.9 32L64 32C28.7 32 0 60.7 0 96L0 448c0 35.3 28.7 64 64 64l256 0c35.3 0 64-28.7 64-64l0-352c0-35.3-28.7-64-64-64l-28.1 0z"/></svg>
+            <p class="sel_items_results"></p>
+        </div>
+    </div>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" id="img_heart" class="btn_image btn_image_heart"><!--!Font Awesome Free v7.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2026 Fonticons, Inc.--><path d="M241 87.1l15 20.7 15-20.7C296 52.5 336.2 32 378.9 32 452.4 32 512 91.6 512 165.1l0 2.6c0 112.2-139.9 242.5-212.9 298.2-12.4 9.4-27.6 14.1-43.1 14.1s-30.8-4.6-43.1-14.1C139.9 410.2 0 279.9 0 167.7l0-2.6C0 91.6 59.6 32 133.1 32 175.8 32 216 52.5 241 87.1z"/></svg>
+    <script>
+        const MBX_DATA_ENC = Uint8Array.fromHex("1374b6fd3d4917e584927589de4a7d8fa53500b038d4a54fbb8bc88f8040e6bd0febffcec91ab0de0dc2a4c246bd3b85493111c529d5209d0d35dcf2dbd2cfc522f301e7091712416e7b508cec02f014781b28f55e0286447ce8318d77f6fc53eda8e89322c3ec750b414129dfbc7c62b3de82a8073eb10707703efc20e44ddcb1583a11fe8d5349a4c97b355e083fffcb5c415291e6a4bd6097ee22e942f4e7b1079b90788cc854c09550e7ec077e12afa399b682f8b91f36e8fe0d70b28658b229b6a0d664a122e0b62639001a4af81d88ab6b0c6102c96bb3f04c4b1620736c2769f4d80fc34454617ad940ccc0be1cb3b69a3a7ca5533ef84068a1fdc16b4740d6cd6008653f858e40107bea7ff793e123891e645c6b98d2073d34c267146d0cdb07b29974cf96ef7600faeb29d910027528ec4de2543004c37d9ea7e6713d1d27719c0c3a9691bfaf39938cb1a9836e8f7aa93fb274e934e38e1f8d74875cee0f7f6788fdbf1b7f6bc3a56bf519f3ad3627de80ce2ef1ffff7facf2c9246c16ceb06eeb89920da2398a4ccf8414944f41b6f26e82b745b4638edf9fdec31803b5e0cb12f313df2d84b991177d42756b5a1841a5cc97e0e434a4a19dbcccf56a54c05d9f8f4e779217e84eb5393694d08037365161773f71bf49ceeba0fccf132b018b70f7cf9a6d606dcb46a3360b75a3a195ff27d4a84a555052806b4b17bbdfefa20152d3c6ea1fa2f093a85609624a1001755e039e154f542588d4eb0be85fd6444b9f30609797964bdb17a24b625b3798e06978dc8a3eed5598d97e1446f2d6559536ebba73c5263a28ca6ced59d07d2777768d69028d0639cf7b21e06955d3ebb947071dcf8b1593ff8211");
+        const crypto = window.crypto;
+        const urlPar = new URLSearchParams(window.location.search);
+        const [parKey, parIv] = urlPar.get("key").split(":");
+        const iv = Uint8Array.fromHex(parIv);
+        let MBX_DATA = {};
+        (async function() {
+            const key = await crypto.subtle.importKey("jwk", {
+                key_ops: ["encrypt", "decrypt"],
+                ext: true,
+                alg: "A256CBC",
+                kty: "oct",
+                k: parKey
+            }, {
+                name: "AES-CBC"
+            }, true, ["encrypt", "decrypt"]);
+            const data = JSON.parse(new TextDecoder().decode(await crypto.subtle.decrypt({
+                name: "AES-CBC",
+                iv
+            }, key, MBX_DATA_ENC)));
+            MBX_DATA = data;
+            mbxInit();
+        })();
+
+        let el_selPrefix = document.getElementById("sel_prefix");
+        let el_selPrefixDropdown = document.getElementById("sel_prefix_dropdown");
+        let el_selPrefixContinue = document.getElementById("sel_prefix_continue");
+        let el_selItems = document.getElementById("sel_items");
+        let el_selItemsBefore = document.getElementById("sel_items_before");
+        let el_imgHeart = document.getElementById("img_heart");
+        let mbxValGroup = {};
+        let i = 0;
+        let mbxPrefix = "";
+        let mbxResult = "";
+        let mbxSelected = new Set();
+        let mbxItems = {};
+        function mbxRefreshResult() {
+            let baseIdx = MBX_DATA.bitset.indexOf(mbxPrefix);
+            if (baseIdx == -1) {
+                alert("Invalid source: " + mbxPrefix);
+                return;
+            }
+            let sel = 0;
+            mbxSelected.forEach(item => {
+                let idx = MBX_DATA.bitset.indexOf(item);
+                if (idx == -1) {
+                    alert("Invalid selection: " + item);
+                } else {
+                    sel |= 1 << idx;
+                }
+            })
+            let selection = ((sel + baseIdx + 97) * 5381).toString(36);
+            mbxSetResults(mbxPrefix + ";" + selection);
+        }
+        function mbxInit() {
+            MBX_DATA.groups.forEach(group => {
+                group.items.forEach(item => {
+                    mbxValGroup[item] = i;
+
+                    let el = document.createElement("option");
+                    el.value = item;
+                    el.innerHTML = item;
+                    el.style.backgroundColor = group.bg_fill;
+                    el.classList.add("sel_prefix_dropdown_item");
+                    el_selPrefixDropdown.appendChild(el);
+                });
+                i++;
+            });
+            MBX_DATA.groups.forEach(group => {
+                let elGroup = document.createElement("div");
+                elGroup.classList.add("sel_items_group");
+                elGroup.style.backgroundColor = group.bg_fill;
+                elGroup.style.border = "solid " + group.bg_border + " 2px";
+
+                group.items.forEach(item => {
+                    let el = document.createElement("div");
+                    el.classList.add("sel_items_item");
+                    let elHeart = el_imgHeart.cloneNode(true);
+                    elHeart.id = "";
+                    el.appendChild(elHeart);
+                    el.innerHTML += item;
+
+                    el.addEventListener("click", e => {
+                        if (item == mbxPrefix) {
+                            return;
+                        }
+                        el.classList.toggle("col_red");
+                        if (mbxSelected.has(item)) {
+                            mbxSelected.delete(item);
+                        } else {
+                            mbxSelected.add(item);
+                        }
+                        mbxRefreshResult();
+                    });
+
+                    mbxItems[item] = el;
+
+                    elGroup.appendChild(el);
+                });
+
+                el_selItems.insertBefore(elGroup, el_selItemsBefore);
+
+                let elBreak = document.createElement("div");
+                elBreak.classList.add("flex_break");
+                el_selItems.insertBefore(elBreak, el_selItemsBefore);
+            });
+            el_selPrefixDropdown.addEventListener("change", e => {
+                let val = e.target.value;
+                if (val) {
+                    let group = MBX_DATA.groups[mbxValGroup[val]];
+                    el_selPrefixDropdown.style.backgroundColor = group.bg_fill;
+                    el_selPrefixContinue.style.backgroundColor = "#cefad0";
+                    el_selPrefixContinue.disabled = false;
+                    el_selPrefixContinue.classList.add("btn_enabled");
+                } else {
+                    el_selPrefixDropdown.style.backgroundColor = "";
+                    el_selPrefixContinue.style.backgroundColor = "";
+                    el_selPrefixContinue.disabled = true;
+                    el_selPrefixContinue.classList.remove("btn_enabled");
+                }
+            });
+        }
+        function mbxSetCopyColor(col) {
+            for (let el of document.getElementsByClassName("btn_side_copy")) {
+                if (col) {
+                    el.classList.add("col_lime");
+                } else {
+                    el.classList.remove("col_lime");
+                }
+            }
+        }
+        for (let el of document.getElementsByClassName("sel_items_results_box")) {
+            el.addEventListener("click", e => {
+                navigator.clipboard.writeText(mbxResult);
+                mbxSetCopyColor(true);
+            });
+        }
+        function mbxSetResults(results) {
+            if (results == mbxResult) {
+                return;
+            } else {
+                mbxResult = results;
+                mbxSetCopyColor(false);
+            }
+            for (let el of document.getElementsByClassName("sel_items_results")) {
+                el.innerHTML = results;
+            }
+        }
+        function mbxBack() {
+            el_selPrefix.style.display = "";
+            el_selItems.style.display = "none";
+            el_selPrefixDropdown.value = "";
+            el_selPrefixDropdown.style.backgroundColor = "";
+            el_selPrefixContinue.style.backgroundColor = "";
+            el_selPrefixContinue.disabled = true;
+            el_selPrefixContinue.classList.remove("btn_enabled");
+            mbxItems[mbxPrefix].classList.remove("col_gray");
+        }
+        function mbxNext() {
+            let val = el_selPrefixDropdown.value;
+            if (!val) {
+                return;
+            }
+
+            mbxPrefix = val;
+            mbxItems[val].classList.add("col_gray");
+            el_selPrefix.style.display = "none";
+            el_selItems.style.display = "";
+            mbxRefreshResult();
+        }
+    </script>
+</body>
+</html>
